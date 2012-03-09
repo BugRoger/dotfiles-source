@@ -1,5 +1,3 @@
 describe "globber" do
-  it "should work" do
-
-  end
+  it "should find "
 end
