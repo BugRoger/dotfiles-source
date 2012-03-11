@@ -4,13 +4,19 @@ Feature:
   So that I have an easier time with setting up new machines and keeping them synced
 
   @fakefs
-  Scenario: Create Symlinks
-    Given I have a folder containing files and folders
-    When I run the link tool
-    Then the files are being linked into my user home
-     And the folders are being linked into my user home
+  Scenario: Configure a new machine with shared dotfiles 
+    Given I have a new machine
+    And   I have a folder containing shared dotfiles
+    When  I run the link tool
+    Then  the dotfiles should be in my user home 
 
+  @fakefs 
+  Scenario: Prefix a dot to files without leading dot 
+    Given I have a folder containing shared dotfiles
+    And   there are files without leading dot 
+    When  I run the link tool
+    Then  the dotfiles should be in my user home
+     And  all files are prefixed with a dot
+
+  Scenario: Synchronize changes
   Scenario: Query for Replace
-  Scenario: Add dots
-
-

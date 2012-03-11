@@ -1,10 +1,11 @@
+require 'rake'
 require 'fakefs/safe'
 
-Before('fakefs') do
+Before('@fakefs') do
   FakeFS.activate!
 end
 
-After('fakefs') do
+After('@fakefs') do
   FakeFS::FileSystem.clear
   FakeFS.deactivate!
 end
