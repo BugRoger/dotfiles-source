@@ -3,10 +3,7 @@ end
 
 When /^I run the link tool$/ do
   require "rake"
-  @rake = Rake::Application.new
-  Rake.application = @rake
-  Rake::Task.define_task(:environment)
-  @rake['default'].invoke   
+  Rake.application.run
 end
 
 Then /^the files are being linked into my user home$/ do
