@@ -3,6 +3,7 @@ Feature:
   I want to use the same dotfile repository on multiple hosts
   So that I have an easier time with setting up new machines and keeping them synced
 
+  @fakefs
   Scenario: Create Symlinks
     Given I have a folder containing files and folders
     When I run the link tool

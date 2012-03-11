@@ -2,7 +2,7 @@ Given /^I have a folder containing files and folders$/ do
 end
 
 When /^I run the link tool$/ do
-  require "rake"
+  require 'rake'
   Rake.application.run
 end
 
