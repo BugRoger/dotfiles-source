@@ -2,11 +2,9 @@ module DotFiles
   extend self
 
   def symlink
-    source_files.each do |file|
-      begin
-        File.symlink file, File.join("~", File.basename(DotFiles.dotify(file)))
-      rescue Errno::EEXIST
-      end
+    source_files.each do |source|
+      target = File.join "~", dotify(source)
+      File.symlink source, target unless File.exists? target
     end
   end
 

@@ -8,9 +8,9 @@ describe "dotfiles" do
     FakeFS::FileSystem.clear
   end
 
-  describe ".symlink" do
-    it "should create symlinks from source dir to user home" do
-      FileUtils.touch "vimrc"
+  describe "#symlink" do
+    it "should replicate source dir to user home" do
+      FileUtils.touch ".vimrc"
 
       DotFiles.symlink
 
