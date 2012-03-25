@@ -14,7 +14,7 @@ describe "dotfiles" do
 
       DotFiles.symlink
 
-      File.should be_exists("~/.vimrc")
+      File.should exist("~/.vimrc")
     end
 
     it "should skip existing symlinks" do 
@@ -24,7 +24,7 @@ describe "dotfiles" do
       
       DotFiles.symlink
 
-      File.readlink("~/.vimrc").should eql ".vim"
+      File.readlink("~/.vimrc").should == ".vim"
     end
   end
 
@@ -39,22 +39,22 @@ describe "dotfiles" do
 
   describe "#dotify" do
     it "should return the basename only" do
-      DotFiles.dotify("/dotfiles/.vimrc").should eql ".vimrc"
+      DotFiles.dotify("/dotfiles/.vimrc").should == ".vimrc"
     end
 
     context "leading dot missing" do
       it "should add a leading dot" do
-        DotFiles.dotify("vimrc").should eql ".vimrc"
+        DotFiles.dotify("vimrc").should == ".vimrc"
       end
 
       it "should add a leading dot for absolute paths" do
-        DotFiles.dotify("/dotfiles/vimrc").should eql ".vimrc"
+        DotFiles.dotify("/dotfiles/vimrc").should == ".vimrc"
       end
     end
 
     context "leading dot exists" do
       it "should not add a leading dot" do
-        DotFiles.dotify(".vimrc").should eql ".vimrc"
+        DotFiles.dotify(".vimrc").should == ".vimrc"
       end
     end
   end

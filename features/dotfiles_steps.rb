@@ -34,3 +34,24 @@ Then /^all files are prefixed with a dot$/ do
   end
 end
 
+Given /^I have run the link tool$/ do
+  step "I have a folder containing shared dotfiles"
+  step "I run the link tool"
+end
+
+When /^I change a dotfile in my user home$/ do
+  File.open("~/.vimrc", "a").puts("Nanananananananana - Batman!")   
+end
+
+Then /^it should also change in the shared folder$/ do
+  File.read(".vimrc").should be_eql File.read("~/.vimrc")
+end
+
+When /^I change a dotfile in the shared folder$/ do
+  File.open(".vimrc", "a").puts("Nanananananananana - Robin!")   
+end
+
+Then /^it should also change in my user home$/ do
+  step "it should also change in the shared folder"
+end
+
