@@ -2,8 +2,12 @@ module DotFiles
   extend self
 
   def symlink
+    puts "Mapping: #{mapping.inspect}"
     mapping.each do |source, target|
-      File.symlink source, target unless File.exists? target
+      unless File.exists?(target)
+        puts "Linking #{source} to #{target}"
+        File.symlink source, target 
+      end
     end
   end
 
@@ -20,15 +24,17 @@ module DotFiles
     defaults = Dir.glob("*") - Dir.glob("*.host-*")
     specific = Dir.glob("*.#{suffix}")
     obsolete = specific.map  { |f| f.split(".#{suffix}").first } 
-    ignored  = blacklist.map { |f| File.expand_path f}
 
-    (defaults + specific) - obsolete - ignored 
+    (defaults + specific) - obsolete - blacklist 
   end
 
   def mapping
-    source_files.each_with_object({}) do |source, hash|
-      hash[source] = File.join "~", prepare(source)
+    mapping = source_files.each_with_object({}) do |source, hash|
+      target = File.expand_path(File.join "~", prepare(source)) 
+      hash[File.expand_path source] = target
     end
+    mapping[File.expand_path "."] = File.expand_path "~/.dotfiles"
+    mapping
   end
 
   def hostname

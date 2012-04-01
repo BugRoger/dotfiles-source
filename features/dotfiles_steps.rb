@@ -66,3 +66,7 @@ end
 Then /^the file "([^"]*)" should be equal to "([^"]*)"$/ do |source, target|
   File.read(source).should be_eql File.read(target)
 end
+
+Then /^the file "([^"]*)" should be in my user home$/ do |target|
+  File.should be_exists(File.expand_path "~/#{target}")
+end

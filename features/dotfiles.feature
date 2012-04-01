@@ -35,3 +35,8 @@ Feature:
     Then  the file "README.md" should not be in my user home
     And   the file ".README.md" should not be in my user home
 
+  Scenario: Map shared dotfiles folder
+    Given I have a folder containing shared dotfiles
+    When  I run the link tool
+    Then  the file ".dotfiles" should be in my user home
+    

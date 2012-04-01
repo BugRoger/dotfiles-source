@@ -33,14 +33,14 @@ describe "dotfiles" do
       FileUtils.touch ".vimrc"
       FileUtils.mkdir ".vim"
 
-      DotFiles.source_files.should =~ %w{.vimrc .vim}.map { |f| File.expand_path f }
+      DotFiles.source_files.should =~ %w{.vimrc .vim}
     end
 
     it "should ignore blacklisted files" do
       DotFiles.stub(:blacklist).and_return(%w{batman.txt})
       FileUtils.touch "batman.txt"
       
-      DotFiles.source_files.should_not include(File.expand_path "batman.txt")
+      DotFiles.source_files.should_not include("batman.txt")
     end
 
     context "hostname matches suffix" do
@@ -55,18 +55,18 @@ describe "dotfiles" do
         end
 
         it "should return the specific file" do
-          DotFiles.source_files.should include(File.expand_path "vimrc.host-work")
+          DotFiles.source_files.should include("vimrc.host-work")
         end
 
         it "should not return the default file" do
-          DotFiles.source_files.should_not include(File.expand_path "vimrc")
+          DotFiles.source_files.should_not include("vimrc")
         end
       end
 
       context "default does not exist" do
         it "should return the specific file" do
           FileUtils.touch "vimrc.host-work"
-          DotFiles.source_files.should include(File.expand_path "vimrc.host-work")
+          DotFiles.source_files.should include("vimrc.host-work")
         end
       end
     end
@@ -80,14 +80,14 @@ describe "dotfiles" do
         it "should return the default file" do
           FileUtils.touch "vimrc"
           FileUtils.touch "vimrc.host-work"
-          DotFiles.source_files.should include(File.expand_path "vimrc")
+          DotFiles.source_files.should include("vimrc")
         end
       end
 
       context "default does not exist" do
         it "should omit the file if no default exists" do
           FileUtils.touch "vimrc.host-work"
-          DotFiles.source_files.should_not include(File.expand_path "vimrc.host-work")
+          DotFiles.source_files.should_not include("vimrc.host-work")
         end
       end
     end
