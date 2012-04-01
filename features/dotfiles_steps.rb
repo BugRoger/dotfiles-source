@@ -7,11 +7,25 @@ Given /^I have a folder containing shared dotfiles$/ do
   %w{.gitconfig .vimrc}.each { |f| FileUtils.touch f }
 end
 
-Then /^the dotfiles should be in my user home$/ do
-  %w{~/.gitconfig ~/.vimrc ~/.vim ~/.tmux}.each do |target|
-    File.should be_exists(File.expand_path target)
-  end
+Given /^there are files without leading dot$/ do
+  FileUtils.touch "gemrc"
+  FileUtils.mkdir "gem"
 end
+
+Given /^I have run the link tool$/ do
+  step "I have a folder containing shared dotfiles"
+  step "I run the link tool"
+end
+
+Given /^the shared dotfiles contain a file "([^"]*)"$/ do |file_name|
+  FileUtils.touch file_name 
+  File.open(file_name, "a").puts(file_name)   
+end
+
+Given /^the hostname is "([^"]*)"$/ do |host|
+  DotFiles.stub(:hostname).and_return(host)
+end
+
 
 When /^I run the link tool$/ do
   FakeFS.deactivate!
@@ -23,9 +37,23 @@ When /^I run the link tool$/ do
   Rake.application.top_level
 end
 
-Given /^there are files without leading dot$/ do
-  FileUtils.touch "gemrc"
-  FileUtils.mkdir "gem"
+When /^I change a dotfile in my user home$/ do
+  File.open("~/.vimrc", "a").puts("Nanananananananana - Batman!")   
+end
+
+When /^I change a dotfile in the shared folder$/ do
+  File.open(".vimrc", "a").puts("Nanananananananana - Robin!")   
+end
+
+
+Then /^the dotfiles should be in my user home$/ do
+  %w{~/.gitconfig ~/.vimrc ~/.vim ~/.tmux}.each do |target|
+    File.should be_exists(File.expand_path target)
+  end
+end
+
+Then /^the file "([^"]*)" should not be in my user home$/ do |target|
+    File.should_not be_exists(File.expand_path "~/#{target}")
 end
 
 Then /^all files are prefixed with a dot$/ do
@@ -34,24 +62,14 @@ Then /^all files are prefixed with a dot$/ do
   end
 end
 
-Given /^I have run the link tool$/ do
-  step "I have a folder containing shared dotfiles"
-  step "I run the link tool"
-end
-
-When /^I change a dotfile in my user home$/ do
-  File.open("~/.vimrc", "a").puts("Nanananananananana - Batman!")   
-end
-
 Then /^it should also change in the shared folder$/ do
   File.read(".vimrc").should be_eql File.read("~/.vimrc")
-end
-
-When /^I change a dotfile in the shared folder$/ do
-  File.open(".vimrc", "a").puts("Nanananananananana - Robin!")   
 end
 
 Then /^it should also change in my user home$/ do
   step "it should also change in the shared folder"
 end
 
+Then /^the file "([^"]*)" should be equal to "([^"]*)"$/ do |source, target|
+  File.read(source).should be_eql File.read(target)
+end

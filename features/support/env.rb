@@ -1,5 +1,6 @@
 require 'rake'
 require 'fakefs/safe'
+require 'cucumber/rspec/doubles'
 
 Before('@fakefs') do
   FakeFS.activate!

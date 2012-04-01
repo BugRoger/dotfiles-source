@@ -3,16 +3,29 @@ module DotFiles
 
   def symlink
     source_files.each do |source|
-      target = File.join "~", dotify(source)
+      target = File.join "~", prepare(source)
       File.symlink source, target unless File.exists? target
     end
   end
 
-  def dotify(file) 
-    File.basename(file).prepend(".").gsub(/\.\./, ".")
+  def prepare(file) 
+    base = File.basename(file)
+    base = base.split(".host-#{hostname}").first
+    base = base.prepend(".")
+    base.gsub(/\.\./, ".")
   end
 
   def source_files
-    return Dir.glob("*")
+    suffix   = "host-#{hostname}"
+
+    defaults = Dir.glob("*") - Dir.glob("*.host-*")
+    specific = Dir.glob("*.#{suffix}")
+    obsolete = specific.map { |f| f.split(".#{suffix}").first } 
+
+    defaults - obsolete + specific
+  end
+
+  def hostname
+    `hostname`.strip.split('.').first
   end
 end
