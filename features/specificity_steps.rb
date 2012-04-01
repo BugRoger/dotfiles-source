@@ -4,7 +4,7 @@ Given /^the shared dotfiles contain a file "([^"]*)"$/ do |file_name|
 end
 
 Given /^the hostname is "([^"]*)"$/ do |host|
-  DotFiles.stub(:hostname).and_return(host)
+  DotFiles.any_instance.stub(:hostname).and_return(host)
 end
 
 Then /^the file "([^"]*)" should not be in my user home$/ do |target|

@@ -20,7 +20,7 @@ end
 Given /^I ignore the file "([^"]*)"$/ do |file|
   @blacklist ||= []
   @blacklist << file
-  DotFiles.stub(:blacklist).and_return(@blacklist)
+  DotFiles.any_instance.stub(:blacklist).and_return(@blacklist)
 end
 
 
