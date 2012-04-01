@@ -17,6 +17,12 @@ Given /^I have run the link tool$/ do
   step "I run the link tool"
 end
 
+Given /^I ignore the file "([^"]*)"$/ do |file|
+  @blacklist ||= []
+  @blacklist << file
+  DotFiles.stub(:blacklist).and_return(@blacklist)
+end
+
 
 When /^I run the link tool$/ do
   FakeFS.deactivate!

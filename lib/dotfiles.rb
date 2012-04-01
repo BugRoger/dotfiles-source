@@ -20,12 +20,17 @@ module DotFiles
 
     defaults = Dir.glob("*") - Dir.glob("*.host-*")
     specific = Dir.glob("*.#{suffix}")
-    obsolete = specific.map { |f| f.split(".#{suffix}").first } 
+    obsolete = specific.map  { |f| f.split(".#{suffix}").first } 
+    ignored  = blacklist.map { |f| File.expand_path f}
 
-    defaults - obsolete + specific
+    (defaults + specific) - obsolete - ignored 
   end
 
   def hostname
     `hostname`.strip.split('.').first
+  end
+
+  def blacklist
+    @blacklist ||= %w{Rakefile README.md}
   end
 end

@@ -26,3 +26,12 @@ Feature:
     Given I have run the link tool
     When  I change a dotfile in the shared folder
     Then  it should also change in my user home 
+
+  Scenario: Ignore blacklisted files
+    Given I have a folder containing shared dotfiles
+    And   the shared dotfiles contain a file "README.md" 
+    And   I ignore the file "README.md" 
+    When  I run the link tool
+    Then  the file "README.md" should not be in my user home
+    And   the file ".README.md" should not be in my user home
+

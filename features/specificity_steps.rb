@@ -8,5 +8,5 @@ Given /^the hostname is "([^"]*)"$/ do |host|
 end
 
 Then /^the file "([^"]*)" should not be in my user home$/ do |target|
-    File.should_not be_exists(File.expand_path "~/#{target}")
+  File.should_not be_exists(File.expand_path "~/#{target}")
 end

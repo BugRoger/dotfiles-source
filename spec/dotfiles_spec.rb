@@ -36,6 +36,13 @@ describe "dotfiles" do
       DotFiles.source_files.should =~ %w{.vimrc .vim}.map { |f| File.expand_path f }
     end
 
+    it "should ignore blacklisted files" do
+      DotFiles.stub(:blacklist).and_return(%w{batman.txt})
+      FileUtils.touch "batman.txt"
+      
+      DotFiles.source_files.should_not include(File.expand_path "batman.txt")
+    end
+
     context "hostname matches suffix" do
       before :each do
         DotFiles.stub(:hostname).and_return("work")
