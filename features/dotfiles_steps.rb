@@ -17,15 +17,6 @@ Given /^I have run the link tool$/ do
   step "I run the link tool"
 end
 
-Given /^the shared dotfiles contain a file "([^"]*)"$/ do |file_name|
-  FileUtils.touch file_name 
-  File.open(file_name, "a").puts(file_name)   
-end
-
-Given /^the hostname is "([^"]*)"$/ do |host|
-  DotFiles.stub(:hostname).and_return(host)
-end
-
 
 When /^I run the link tool$/ do
   FakeFS.deactivate!
@@ -50,10 +41,6 @@ Then /^the dotfiles should be in my user home$/ do
   %w{~/.gitconfig ~/.vimrc ~/.vim ~/.tmux}.each do |target|
     File.should be_exists(File.expand_path target)
   end
-end
-
-Then /^the file "([^"]*)" should not be in my user home$/ do |target|
-    File.should_not be_exists(File.expand_path "~/#{target}")
 end
 
 Then /^all files are prefixed with a dot$/ do
