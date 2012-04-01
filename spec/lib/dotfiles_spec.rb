@@ -3,6 +3,7 @@ require "dotfiles"
 require "fakefs"
 
 describe "dotfiles" do
+
   after :each do
     FakeFS::FileSystem.clear
   end
@@ -10,7 +11,9 @@ describe "dotfiles" do
   describe "#symlink" do
     it "should replicate source dir to user home" do
       FileUtils.touch ".vimrc"
+
       DotFiles.symlink
+
       File.should exist("~/.vimrc")
     end
 
@@ -18,7 +21,9 @@ describe "dotfiles" do
       FileUtils.touch ".vimrc"
       FileUtils.mkdir ".vim"
       File.symlink    ".vim", "~/.vimrc"
+      
       DotFiles.symlink
+
       File.readlink("~/.vimrc").should == ".vim"
     end
   end
@@ -27,12 +32,14 @@ describe "dotfiles" do
     it "should glob files from source directory" do
       FileUtils.touch ".vimrc"
       FileUtils.mkdir ".vim"
+
       DotFiles.source_files.should =~ %w{.vimrc .vim}.map { |f| File.expand_path f }
     end
 
     it "should ignore blacklisted files" do
       DotFiles.stub(:blacklist).and_return(%w{batman.txt})
       FileUtils.touch "batman.txt"
+      
       DotFiles.source_files.should_not include(File.expand_path "batman.txt")
     end
 

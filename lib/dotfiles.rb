@@ -2,8 +2,7 @@ module DotFiles
   extend self
 
   def symlink
-    source_files.each do |source|
-      target = File.join "~", prepare(source)
+    mapping.each do |source, target|
       File.symlink source, target unless File.exists? target
     end
   end
@@ -24,6 +23,12 @@ module DotFiles
     ignored  = blacklist.map { |f| File.expand_path f}
 
     (defaults + specific) - obsolete - ignored 
+  end
+
+  def mapping
+    source_files.each_with_object({}) do |source, hash|
+      hash[source] = File.join "~", prepare(source)
+    end
   end
 
   def hostname
