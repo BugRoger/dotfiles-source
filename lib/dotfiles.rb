@@ -40,11 +40,11 @@ class DotFiles
 
         FileUtils.rm_rf(target) if overwrite || overwrite_all
         FileUtils.copy(target, "#{target}.backup") if backup || backup_all
+      end
 
-        unless skip || skip_all 
-          puts "Linking #{source} to #{target}"
-          File.symlink source, target 
-        end
+      unless skip || skip_all 
+        puts "Linking #{source} to #{target}"
+        File.symlink source, target 
       end
     end
   end
