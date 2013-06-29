@@ -1,3 +1,5 @@
+require "fileutils"
+
 class DotFiles
   attr_reader :defaults, :host_specific, :merged
 
